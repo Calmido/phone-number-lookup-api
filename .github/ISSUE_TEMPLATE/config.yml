@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: A verdict or business name is wrong
+    url: https://www.calmido.com/nl-en/directory
+    about: Look the number up and use the link under its verdict. Never put a phone number in a public issue.
+  - name: The number is yours and you want it out of the directory
+    url: mailto:legal@calmido.com
+    about: Write to legal@calmido.com. We confirm within 72 hours and decide within a month.
+  - name: Higher limits or early access to the REST endpoint
+    url: mailto:support@calmido.com
+    about: Tell us what you are building.

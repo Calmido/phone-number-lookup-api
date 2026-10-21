@@ -1,0 +1,27 @@
+name: API problem
+description: The endpoint errors, times out, or answers in a way the docs do not describe.
+labels: [api]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not put a phone number in this issue.** Issues are public, and a number in one is a publication.
+        Describe the kind of number instead (for example "a Belgian mobile number with reports").
+        To dispute a verdict, use the link under it on the number's page.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The request without the number, and the answer or error you got.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: when
+    attributes:
+      label: When (date and time, with time zone)
