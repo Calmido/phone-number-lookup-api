@@ -8,8 +8,8 @@ Luxembourgish (+352) number.
 | | |
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
-| **In development** | REST endpoint `GET /api/v1/numbers/{number}` with a free key. Same numbers in, same fields out |
-| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds examples, the changelog and, from the REST launch on, the OpenAPI spec and the API terms |
+| **Launching soon** | REST endpoint `POST /api/v1/lookup` with a free key. Same numbers in, same fields out |
+| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and, from the REST launch on, the API terms |
 
 ## Quick start
 
@@ -39,6 +39,25 @@ claude mcp add --transport http calmido https://www.calmido.com/api/mcp
 Adding Calmido to Claude or ChatGPT without code: [calmido.com/nl-en/ai-assistants](https://www.calmido.com/nl-en/ai-assistants).
 Listed in the MCP Registry as `com.calmido/phone-number-lookup`.
 
+### With a key (REST, launching soon)
+
+Get a free key at [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers): your
+e-mail address, what you are building, and a confirmation link. The key is shown once; keep it on your
+server. The number goes in the body, never in the URL, so it does not end up in access logs.
+
+```sh
+curl -s https://www.calmido.com/api/v1/lookup \
+  -H "x-api-key: $CALMIDO_API_KEY" \
+  -H 'content-type: application/json' \
+  -d '{"number":"+31 183 554 004","language":"en"}'
+```
+
+The answer is the object under [Output](#output). Errors are `{ "error": "…" }`: `invalid_number`
+(400), `missing_key` or `invalid_key` (401), `rate_limited` (429, with `Retry-After`). Today's count:
+`GET /api/v1/partner/usage` with the same header. The full contract is in [openapi.yaml](openapi.yaml);
+examples in [curl](examples/rest-lookup.sh), [Python](examples/rest-lookup.py) and
+[Node.js](examples/rest-lookup.mjs).
+
 ## Input
 
 | Argument | Required | |
@@ -52,7 +71,7 @@ not guessed.
 
 ## Output
 
-`structuredContent` of the tool result:
+`structuredContent` of the MCP tool result, and the body of a REST answer:
 
 ```json
 {
@@ -114,16 +133,23 @@ These rules hold for every way in, and will be part of the API terms.
 
 ## Limits
 
-Anonymous use is throttled per address: a burst of at least 30 lookups, then 60 per minute. The
-limit is counted per server, and there is more than one. Higher limits come with the free key and the
-paid plans; until then, write to [support@calmido.com](mailto:support@calmido.com) with what you are
-building.
+| | Limit |
+|---|---|
+| **MCP, no key** | Per address: a burst of at least 30 lookups, then 60 per minute. Counted per server, and there is more than one |
+| **Free key** | 100 distinct numbers per day, 60 requests per minute. Asking for a number already looked up today does not count again and never fails on the daily cap |
+
+The day ends at midnight in Amsterdam. Each keyed answer carries `X-RateLimit-Limit`,
+`X-RateLimit-Remaining` (distinct numbers left today) and `X-RateLimit-Reset` (Unix seconds). Need
+more? Write to [support@calmido.com](mailto:support@calmido.com) with what you are building.
 
 ## Data and privacy
 
-- **What we store about you:** nothing. The looked-up number is not stored and no lookup record is
-  written. Your address is held in memory for rate limiting only. A lookup through the API never
-  moves a number up the directory's lists.
+- **What we store about you:** without a key, nothing. With a key: your e-mail address, what you are
+  building, your site if you gave one, which terms you accepted and when, and a hash of the key (never
+  the key itself).
+- **What we store about the numbers you look up:** nothing. No lookup record is written. To count
+  distinct numbers per day, we keep an unreadable fingerprint of each in memory until midnight; only
+  the count can be read back. A lookup through the API never moves a number up the directory's lists.
 - **Where the data comes from:** community reports, as counts and categories, never as free text.
   Business names come from public sources such as Overture Maps, OpenStreetMap and the Belgian KBO
   register, and from businesses that claimed their number. Each answer names the source and licence

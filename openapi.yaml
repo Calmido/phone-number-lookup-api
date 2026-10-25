@@ -1,0 +1,280 @@
+openapi: 3.1.0
+info:
+  title: Calmido Phone Number Lookup API
+  version: 1.0.0
+  summary: Who is behind a phone number in the Netherlands, Belgium or Luxembourg.
+  description: |
+    The REST door to the same lookup the MCP endpoint answers: the community verdict, the number of
+    reports, the most reported category and the registered business, for one Dutch (+31), Belgian
+    (+32) or Luxembourgish (+352) number per request.
+
+    Get a free key at https://www.calmido.com/nl-en/developers. The key goes in `X-API-Key`. The
+    number goes in the request body, never in the URL, so it does not end up in access logs.
+
+    Use of the data is governed by the API terms (`terms/` in this repository).
+  contact:
+    email: support@calmido.com
+    url: https://github.com/Calmido/phone-number-lookup-api
+  license:
+    name: MIT (this specification only; the data is governed by the API terms)
+    identifier: MIT
+servers:
+  - url: https://www.calmido.com
+security:
+  - apiKey: []
+paths:
+  /api/v1/lookup:
+    post:
+      operationId: lookupPhoneNumber
+      summary: Look up one phone number
+      description: |
+        Counts against the key's daily cap of **distinct** numbers. Asking for a number already looked
+        up today never fails on the daily cap and does not count again.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupRequest'
+            example:
+              number: '+31 183 554 004'
+              language: en
+      responses:
+        '200':
+          description: |
+            The answer. Also returned, with `verdict: unavailable`, when the directory could not be
+            read just now: that never means "no reports".
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResult'
+              example:
+                number:
+                  e164: '+31183554004'
+                  national: '0183 554 004'
+                  international: '+31 183 554 004'
+                  country: NL
+                verdict: suspicious
+                report_count: 59
+                top_category: null
+                business: null
+                restricted: false
+                page_url: https://www.calmido.com/nl-nl/directory/31183554004
+                summary: >-
+                  This number has been reported 59×. Based on user reports; no reports does not mean a
+                  number is safe. The reports themselves, their dates and the full picture are at
+                  https://www.calmido.com/nl-nl/directory/31183554004
+        '400':
+          description: The number is not a valid, dialable number.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: invalid_number
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          description: |
+            Over the daily cap of distinct numbers, or over the per-minute guard. `Retry-After` says
+            when to try again: the next midnight in Amsterdam for the daily cap, the next minute for the
+            guard.
+          headers:
+            Retry-After:
+              description: Seconds until the limit lifts.
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: rate_limited
+  /api/v1/partner/usage:
+    get:
+      operationId: getUsage
+      summary: The key's plan and today's count
+      description: Counts only. Which numbers a key looked up is not stored and cannot be read.
+      responses:
+        '200':
+          description: The key's usage today.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+              example:
+                partner_id: my-dialer-3f9a
+                plan: free
+                expires_at: null
+                numbers_today: 7
+                numbers_per_day: 100
+                reset_at: '2026-10-25T22:00:00.000Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          description: Usage could not be read just now.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unavailable
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: A key of the form `cal_…`, shown once when it is made. Keep it on your server.
+  headers:
+    X-RateLimit-Limit:
+      description: Distinct numbers the key may look up today.
+      schema:
+        type: integer
+    X-RateLimit-Remaining:
+      description: Distinct numbers left today.
+      schema:
+        type: integer
+    X-RateLimit-Reset:
+      description: When the count refers to resets, in Unix seconds.
+      schema:
+        type: integer
+  responses:
+    Unauthorized:
+      description: No key (`missing_key`), or a key we did not issue or have revoked (`invalid_key`).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: invalid_key
+  schemas:
+    LookupRequest:
+      type: object
+      required: [number]
+      additionalProperties: false
+      properties:
+        number:
+          type: string
+          minLength: 3
+          maxLength: 40
+          description: |
+            International (`+31 20 123 4567`, `0031…`, `31201234567`) or national (`020 123 4567`).
+            Spaces, dashes and brackets are ignored.
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+          description: |
+            ISO 3166-1 alpha-2 country of a national-format number. Without it, NL, then BE, then LU
+            are tried.
+        language:
+          type: string
+          enum: [nl, en, fr]
+          default: en
+          description: The language of `summary`, `top_category` and the page at `page_url`.
+    LookupResult:
+      type: object
+      required: [number, verdict, report_count, top_category, business, restricted, page_url, summary]
+      properties:
+        number:
+          type: object
+          required: [e164, national, international, country]
+          properties:
+            e164:
+              type: string
+            national:
+              type: string
+            international:
+              type: string
+            country:
+              type: string
+        verdict:
+          type: string
+          enum: [suspicious, safe, neutral, business, empty, restricted, unavailable]
+          description: |
+            Describes the calls people reported from the number, not the person or business holding
+            it. `empty` does not mean the number is safe. `unavailable` never means "no reports".
+        report_count:
+          type: integer
+          minimum: 0
+        top_category:
+          type: [string, 'null']
+          description: The most reported category, in the requested language.
+        business:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Business'
+        restricted:
+          type: boolean
+          description: True when the identity behind the number was erased on request.
+        page_url:
+          type: string
+          format: uri
+          description: The number's page, with the reports and the way to dispute them. Link to it wherever you show a verdict.
+        summary:
+          type: string
+          description: One sentence you may quote, with a link to `page_url`.
+    Business:
+      type: object
+      required: [name, sources]
+      properties:
+        name:
+          type: string
+        sources:
+          type: array
+          description: Where the name comes from. Name the source wherever you show the name.
+          items:
+            type: object
+            required: [name, url, licence, licence_url]
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+                format: uri
+              licence:
+                type: string
+              licence_url:
+                type: string
+                format: uri
+    Usage:
+      type: object
+      required: [partner_id, plan, expires_at, numbers_today, numbers_per_day, reset_at]
+      properties:
+        partner_id:
+          type: string
+        plan:
+          type: string
+          enum: [free, trial, pro, business]
+        expires_at:
+          type: [string, 'null']
+          format: date-time
+          description: When a paid or trial plan ends; null for the free plan.
+        numbers_today:
+          type: integer
+        numbers_per_day:
+          type: integer
+        reset_at:
+          type: string
+          format: date-time
+          description: The next midnight in Amsterdam.
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum: [missing_key, invalid_key, invalid_number, rate_limited, unavailable, not_found]
