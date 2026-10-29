@@ -8,7 +8,7 @@ Luxembourgish (+352) number.
 | | |
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
-| **Launching soon** | REST endpoint `POST https://api.calmido.com/v1/lookup` with a free key. Same numbers in, same fields out |
+| **Launching soon** | REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key. Same numbers in, same fields out |
 | **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and, from the REST launch on, the API terms |
 
 ## Quick start
@@ -51,7 +51,7 @@ today's count, and you replace or delete it. The number goes in the body, never 
 not end up in access logs.
 
 ```sh
-curl -s https://api.calmido.com/v1/lookup \
+curl -s https://api.calmido.com/developer/v1/lookup \
   -H "x-api-key: $CALMIDO_API_KEY" \
   -H 'content-type: application/json' \
   -d '{"number":"+31 183 554 004","language":"en"}'
@@ -59,7 +59,7 @@ curl -s https://api.calmido.com/v1/lookup \
 
 The answer is the object under [Output](#output). Errors are `{ "error": "…" }`: `invalid_number`
 (400), `missing_key` or `invalid_key` (401), `rate_limited` (429, with `Retry-After`). Today's count:
-`GET /v1/partner/usage` with the same header. The full contract is in [openapi.yaml](openapi.yaml);
+`GET /developer/v1/partner/usage` with the same header. The full contract is in [openapi.yaml](openapi.yaml);
 examples in [curl](examples/rest-lookup.sh), [Python](examples/rest-lookup.py) and
 [Node.js](examples/rest-lookup.mjs).
 

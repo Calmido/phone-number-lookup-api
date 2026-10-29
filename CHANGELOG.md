@@ -4,9 +4,9 @@ Changes to the Calmido Phone Number Lookup API that you can see from the outside
 
 ## Unreleased
 
-- REST endpoint `POST https://api.calmido.com/v1/lookup` with a free key from
+- REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key from
   [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers), and
-  `GET /v1/partner/usage`. Contract in [openapi.yaml](openapi.yaml); examples in
+  `GET /developer/v1/partner/usage`. Contract in [openapi.yaml](openapi.yaml); examples in
   [examples/](examples/).
 
 ## 2026-10-16

@@ -23,7 +23,7 @@ servers:
 security:
   - apiKey: []
 paths:
-  /v1/lookup:
+  /developer/v1/lookup:
     post:
       operationId: lookupPhoneNumber
       summary: Look up one phone number
@@ -103,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 error: rate_limited
-  /v1/partner/usage:
+  /developer/v1/partner/usage:
     get:
       operationId: getUsage
       summary: The key's plan and today's count

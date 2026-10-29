@@ -7,7 +7,7 @@ set -eu
 number=${1:?usage: $0 NUMBER [LANGUAGE]}
 language=${2:-en}
 
-curl -sS https://api.calmido.com/v1/lookup \
+curl -sS https://api.calmido.com/developer/v1/lookup \
   -H "x-api-key: $CALMIDO_API_KEY" \
   -H 'content-type: application/json' \
   -d "{\"number\":\"$number\",\"language\":\"$language\"}"
