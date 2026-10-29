@@ -9,7 +9,7 @@ import sys
 import urllib.error
 import urllib.request
 
-ENDPOINT = "https://www.calmido.com/api/v1/lookup"
+ENDPOINT = "https://api.calmido.com/v1/lookup"
 
 
 def lookup(number, language="en", country=None, key=None):

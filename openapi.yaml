@@ -19,11 +19,11 @@ info:
     name: MIT (this specification only; the data is governed by the API terms)
     identifier: MIT
 servers:
-  - url: https://www.calmido.com
+  - url: https://api.calmido.com
 security:
   - apiKey: []
 paths:
-  /api/v1/lookup:
+  /v1/lookup:
     post:
       operationId: lookupPhoneNumber
       summary: Look up one phone number
@@ -84,8 +84,8 @@ paths:
         '429':
           description: |
             Over the daily cap of distinct numbers, or over the per-minute guard. `Retry-After` says
-            when to try again: the next midnight in Amsterdam for the daily cap, the next minute for the
-            guard.
+            when to try again: the next midnight UTC for the daily cap, the end of the minute for the
+            guard. `X-RateLimit-Reset` gives the same moment.
           headers:
             Retry-After:
               description: Seconds until the limit lifts.
@@ -103,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 error: rate_limited
-  /api/v1/partner/usage:
+  /v1/partner/usage:
     get:
       operationId: getUsage
       summary: The key's plan and today's count
@@ -121,7 +121,7 @@ paths:
                 expires_at: null
                 numbers_today: 7
                 numbers_per_day: 100
-                reset_at: '2026-10-25T22:00:00.000Z'
+                reset_at: '2026-10-26T00:00:00.000Z'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '503':
@@ -149,7 +149,9 @@ components:
       schema:
         type: integer
     X-RateLimit-Reset:
-      description: When the count refers to resets, in Unix seconds.
+      description: |
+        When the daily count resets (the next midnight UTC), in Unix seconds. On a 429 from the
+        per-minute guard: the end of that minute.
       schema:
         type: integer
   responses:
@@ -165,7 +167,6 @@ components:
     LookupRequest:
       type: object
       required: [number]
-      additionalProperties: false
       properties:
         number:
           type: string
@@ -184,7 +185,9 @@ components:
           type: string
           enum: [nl, en, fr]
           default: en
-          description: The language of `summary`, `top_category` and the page at `page_url`.
+          description: |
+            The language of `summary`, `top_category` and the page at `page_url`. Any other value is
+            answered in `en`.
     LookupResult:
       type: object
       required: [number, verdict, report_count, top_category, business, restricted, page_url, summary]
@@ -243,12 +246,12 @@ components:
               name:
                 type: string
               url:
-                type: string
+                type: [string, 'null']
                 format: uri
               licence:
-                type: string
+                type: [string, 'null']
               licence_url:
-                type: string
+                type: [string, 'null']
                 format: uri
     Usage:
       type: object
@@ -270,7 +273,7 @@ components:
         reset_at:
           type: string
           format: date-time
-          description: The next midnight in Amsterdam.
+          description: The next midnight UTC.
     Error:
       type: object
       required: [error]

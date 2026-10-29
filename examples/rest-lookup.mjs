@@ -1,7 +1,7 @@
 // Look up a phone number through Calmido's REST endpoint with your free key. Node.js 18 or later, no dependencies.
 // Usage: CALMIDO_API_KEY=cal_… node rest-lookup.mjs "+31 183 554 004" [nl|en|fr]
 
-const ENDPOINT = 'https://www.calmido.com/api/v1/lookup';
+const ENDPOINT = 'https://api.calmido.com/v1/lookup';
 
 export async function lookup(number, language = 'en', country, key = process.env.CALMIDO_API_KEY) {
   const response = await fetch(ENDPOINT, {
