@@ -208,8 +208,9 @@ components:
           type: string
           enum: [suspicious, safe, neutral, business, empty, restricted, unavailable]
           description: |
-            Describes the calls people reported from the number, not the person or business holding
-            it. `empty` does not mean the number is safe. `unavailable` never means "no reports".
+            A verdict summarises reports about calls from this number; numbers can be spoofed and
+            reassigned, so it says nothing about whoever holds the number now. `empty` does not mean
+            the number is safe. `unavailable` never means "no reports".
         report_count:
           type: integer
           minimum: 0
