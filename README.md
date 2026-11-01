@@ -8,8 +8,8 @@ Luxembourgish (+352) number.
 | | |
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
-| **In development** | REST endpoint `GET /api/v1/numbers/{number}` with a free key. Same numbers in, same fields out |
-| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds examples, the changelog and, from the REST launch on, the OpenAPI spec and the API terms |
+| **Launching soon** | REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key. Same numbers in, same fields out |
+| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and, from the REST launch on, the API terms |
 
 ## Quick start
 
@@ -39,6 +39,30 @@ claude mcp add --transport http calmido https://www.calmido.com/api/mcp
 Adding Calmido to Claude or ChatGPT without code: [calmido.com/nl-en/ai-assistants](https://www.calmido.com/nl-en/ai-assistants).
 Listed in the MCP Registry as `com.calmido/phone-number-lookup`.
 
+### With a key (REST, launching soon)
+
+Get a free key at [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers). A key
+belongs to a Calmido account: say what you are building, confirm your e-mail address with the code we
+send you, declare that you build from the European Economic Area, and accept the API terms. There is
+one key per mailbox (`+tags` and Gmail dots count as the same mailbox), and at most 3 per company
+domain. The key is shown once; keep it on your server. On
+[the account page](https://www.calmido.com/nl-en/developers/account) you see the key by its prefix and
+today's count, and you replace or delete it. The number goes in the body, never in the URL, so it does
+not end up in access logs.
+
+```sh
+curl -s https://api.calmido.com/developer/v1/lookup \
+  -H "x-api-key: $CALMIDO_API_KEY" \
+  -H 'content-type: application/json' \
+  -d '{"number":"+31 183 554 004","language":"en"}'
+```
+
+The answer is the object under [Output](#output). Errors are `{ "error": "…" }`: `invalid_number`
+(400), `missing_key` or `invalid_key` (401), `rate_limited` (429, with `Retry-After`). Today's count:
+`GET /developer/v1/partner/usage` with the same header. The full contract is in [openapi.yaml](openapi.yaml);
+examples in [curl](examples/rest-lookup.sh), [Python](examples/rest-lookup.py) and
+[Node.js](examples/rest-lookup.mjs).
+
 ## Input
 
 | Argument | Required | |
@@ -52,7 +76,7 @@ not guessed.
 
 ## Output
 
-`structuredContent` of the tool result:
+`structuredContent` of the MCP tool result, and the body of a REST answer:
 
 ```json
 {
@@ -114,16 +138,28 @@ These rules hold for every way in, and will be part of the API terms.
 
 ## Limits
 
-Anonymous use is throttled per address: a burst of at least 30 lookups, then 60 per minute. The
-limit is counted per server, and there is more than one. Higher limits come with the free key and the
-paid plans; until then, write to [support@calmido.com](mailto:support@calmido.com) with what you are
-building.
+| | Limit |
+|---|---|
+| **MCP, no key** | Per address: a burst of at least 30 lookups, then 60 per minute. Counted per server, and there is more than one |
+| **Free key** | 100 distinct numbers per day, 60 requests per minute. Asking for a number already looked up today does not count again and never fails on the daily cap |
+
+The day ends at midnight UTC. Each keyed answer carries `X-RateLimit-Limit`,
+`X-RateLimit-Remaining` (distinct numbers left today) and `X-RateLimit-Reset` (Unix seconds: midnight,
+or the end of the minute when the per-minute limit refused the request). Need
+more? Write to [support@calmido.com](mailto:support@calmido.com) with what you are building.
 
 ## Data and privacy
 
-- **What we store about you:** nothing. The looked-up number is not stored and no lookup record is
-  written. Your address is held in memory for rate limiting only. A lookup through the API never
-  moves a number up the directory's lists.
+- **What we store about you:** without a key, nothing. With a key: the Calmido account it belongs to,
+  your e-mail address, what you are building, your site if you gave one, your EEA declaration, which
+  terms you accepted and when, your plan, and a hash of the key with its first characters (never the
+  key itself). After you replace a key, the old key's hash is kept until the old key stops working.
+  Your daily counts (how many distinct numbers, never which) are kept for 12 months. A free key
+  unused for 12 months is deleted, and we write to you 30 days before. A key revoked for misuse keeps
+  its address from getting a new key for 24 months.
+- **What we store about the numbers you look up:** nothing. No lookup record is written. To count
+  distinct numbers per day, we keep an unreadable fingerprint of each in memory until midnight; only
+  the count can be read back. A lookup through the API never moves a number up the directory's lists.
 - **Where the data comes from:** community reports, as counts and categories, never as free text.
   Business names come from public sources such as Overture Maps, OpenStreetMap and the Belgian KBO
   register, and from businesses that claimed their number. Each answer names the source and licence
