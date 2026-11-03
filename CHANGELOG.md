@@ -2,7 +2,7 @@
 
 Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first.
 
-## 2026-10-30
+## ⟦date of merge⟧
 
 - [API terms](terms/api-terms.md) version 1.0 published.
 
