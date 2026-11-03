@@ -9,7 +9,7 @@ Luxembourgish (+352) number.
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
 | **In development** | REST endpoint `GET /api/v1/numbers/{number}` with a free key. Same numbers in, same fields out |
-| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds examples, the changelog and, from the REST launch on, the OpenAPI spec and the API terms |
+| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds examples, the changelog and, from the REST launch on, the OpenAPI spec and the [API terms](terms/api-terms.md) |
 
 ## Quick start
 
@@ -99,7 +99,7 @@ Numbers are spoofed and reassigned.
 
 ## How the data may be used
 
-These rules hold for every way in, and will be part of the API terms.
+These rules hold for every way in, and are part of the [API terms](terms/api-terms.md).
 
 - **One number per lookup.** There is no bulk endpoint and no download of the directory.
 - **Look up the numbers your users ask about or are called by.** Walking through number ranges is
@@ -143,8 +143,7 @@ publication. Use the number's page instead:
 ## Licence
 
 The examples and documentation in this repository are MIT-licensed. The data the API returns is not:
-its use is governed by the rules above and, from the REST launch on, by the API terms in
-[terms/](terms/).
+its use is governed by the rules above and by the [API terms](terms/api-terms.md).
 
 ---
 
