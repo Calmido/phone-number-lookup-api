@@ -154,9 +154,9 @@ Disputing is free for everyone.
 
 ## 9. Availability, support and changes
 
-- **No availability guarantee.**
-- **Support:** support@calmido.com, working days 09:00–17:00 (Europe/Amsterdam), a first response within one
-  working day. Live status: status.calmido.com.
+- **Availability:** we aim for the API to be available at all times, but we give **no availability
+  guarantee**. Live status: status.calmido.com.
+- **Support:** by e-mail at support@calmido.com, on a best-effort basis, with no guaranteed response time.
 - **Breaking changes** are announced in the changelog and by e-mail to key holders before they apply. New
   fields and better coverage roll out without notice.
 - **Beta features** are opt-in per feature and may change without notice.
