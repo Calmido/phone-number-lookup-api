@@ -2,6 +2,10 @@
 
 Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first.
 
+## ⟦date of merge⟧
+
+- [API terms](terms/api-terms.md) version 1.0 published.
+
 ## 2026-10-16
 
 - `page_url` follows the requested `language` where the number's market has a page in it (`nl-en`,
