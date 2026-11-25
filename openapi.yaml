@@ -203,7 +203,7 @@ components:
             international:
               type: string
             country:
-              type: string
+              type: [string, 'null']
         verdict:
           type: string
           enum: [suspicious, safe, neutral, business, empty, restricted, unavailable]
@@ -281,4 +281,4 @@ components:
       properties:
         error:
           type: string
-          enum: [missing_key, invalid_key, invalid_number, rate_limited, unavailable, not_found]
+          enum: [missing_key, invalid_key, invalid_number, rate_limited, unavailable]

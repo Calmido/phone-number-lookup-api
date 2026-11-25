@@ -9,6 +9,10 @@ Changes to the Calmido Phone Number Lookup API that you can see from the outside
   `GET /developer/v1/partner/usage`. Contract in [openapi.yaml](openapi.yaml); examples in
   [examples/](examples/).
 
+## ⟦date of merge⟧
+
+- [API terms](terms/api-terms.md) version 1.0 published.
+
 ## 2026-10-16
 
 - `page_url` follows the requested `language` where the number's market has a page in it (`nl-en`,
