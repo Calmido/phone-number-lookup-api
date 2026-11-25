@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Version** | 1.0 |
-| **In force** | ⟦date of merge⟧ |
+| **In force** | 25 November 2026 |
 
 ## 1. Who we are
 
@@ -74,6 +74,11 @@ business uses a number; deciding how to route or screen a call; answering a pers
 Calmido page, using the `page_url` from the answer: it holds the evidence and the way to dispute it. Do not
 rewrite it, shorten it or route it through your own domain or a link shortener. Linking to another language
 version of the same page is fine. This applies with or without a key.
+
+**Business names.** The `business` field carries a name and, for each source, its name, a link to the source
+record and its licence where it has one (`sources[]`). You may show the business name to others only together
+with that source information as we supply it, and you must follow the licence of that source, for example the
+attribution OpenStreetMap's ODbL asks for. You may not present the name without its source, or as your own data.
 
 ## 6. Caching, storage and deletion
 
