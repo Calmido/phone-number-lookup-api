@@ -9,9 +9,9 @@ Changes to the Calmido Phone Number Lookup API that you can see from the outside
   `GET /developer/v1/partner/usage`. Contract in [openapi.yaml](openapi.yaml); examples in
   [examples/](examples/).
 
-## ⟦date of merge⟧
+## 2026-11-25
 
-- [API terms](terms/api-terms.md) version 1.0 published.
+- [API terms](terms/api-terms.md) version 1.0 published, in force on 25 November 2026. Art. 5 states that a business name is shown only with its source information.
 
 ## 2026-10-16
 
