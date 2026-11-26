@@ -180,7 +180,8 @@ Disputing is free for everyone.
 ## 10. Suspension and termination
 
 We may suspend access immediately where that is needed to deal with a security threat, misuse of the API
-(art. 5 in particular), unlawful use, or a real risk to the service or its users. For any other breach of
+(art. 5 in particular), unlawful use, or a real risk to the service or its users. For misuse under art. 5
+and for unlawful use, we may also end access immediately. For any other breach of
 these terms we warn you first and give you a reasonable time to put it right before we suspend or end access.
 We keep a suspension to what is needed and restore access when its reason no longer applies. You can stop
 using the API at any time. Art. 6 applies afterwards.
@@ -189,7 +190,7 @@ using the API at any time. Art. 6 applies afterwards.
 
 Our liability is excluded as far as the law allows. We are not liable for indirect damage, including loss of
 profit, reputational damage, or damage to your customers from a verdict that was wrong, outdated or
-unavailable. These limits do not apply to intent or deliberate recklessness, or where the law does not allow them.
+unavailable. These limits do not apply to intent or deliberate recklessness.
 
 ## 12. Who may use the API
 
