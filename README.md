@@ -58,7 +58,7 @@ curl -s https://api.calmido.com/developer/v1/lookup \
 ```
 
 The answer is the object under [Output](#output). Errors are `{ "error": "…" }`: `invalid_number`
-(400), `missing_key` or `invalid_key` (401), `rate_limited` (429, with `Retry-After`). Today's count:
+(400), `missing_key` or `invalid_key` (401), `body_too_large` (413, body over 1 KiB), `rate_limited` (429, with `Retry-After`). Today's count:
 `GET /developer/v1/partner/usage` with the same header. The full contract is in [openapi.yaml](openapi.yaml);
 examples in [curl](examples/rest-lookup.sh), [Python](examples/rest-lookup.py) and
 [Node.js](examples/rest-lookup.mjs).

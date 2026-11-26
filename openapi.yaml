@@ -28,7 +28,8 @@ paths:
       operationId: lookupPhoneNumber
       summary: Look up one phone number
       description: |
-        Counts against the key's daily cap of **distinct** numbers. Asking for a number already looked
+        Counts against the key's daily cap of **distinct** numbers (free key: 100 a day, and at most 60
+        requests a minute). Asking for a number already looked
         up today never fails on the daily cap and does not count again.
       requestBody:
         required: true
@@ -81,11 +82,19 @@ paths:
                 error: invalid_number
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '413':
+          description: The body is over 1 KiB. A request for one number is about 100 bytes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: body_too_large
         '429':
           description: |
             Over the daily cap of distinct numbers, or over the per-minute guard. `Retry-After` says
-            when to try again: the next midnight UTC for the daily cap, the end of the minute for the
-            guard. `X-RateLimit-Reset` gives the same moment.
+            when to try again: the next midnight UTC for the daily cap, 60 seconds after the first request of
+            the current window for the per-minute guard (a rolling window, not the clock minute). `X-RateLimit-Reset` gives the same moment.
           headers:
             Retry-After:
               description: Seconds until the limit lifts.
@@ -145,13 +154,15 @@ components:
       schema:
         type: integer
     X-RateLimit-Remaining:
-      description: Distinct numbers left today.
+      description: |
+        Distinct numbers left today. A 429 from the per-minute guard still shows the daily figure, so
+        follow `Retry-After`, not this value.
       schema:
         type: integer
     X-RateLimit-Reset:
       description: |
         When the daily count resets (the next midnight UTC), in Unix seconds. On a 429 from the
-        per-minute guard: the end of that minute.
+        per-minute guard: 60 seconds after the first request of the current window.
       schema:
         type: integer
   responses:
@@ -281,4 +292,4 @@ components:
       properties:
         error:
           type: string
-          enum: [missing_key, invalid_key, invalid_number, rate_limited, unavailable]
+          enum: [missing_key, invalid_key, invalid_number, body_too_large, rate_limited, unavailable]
