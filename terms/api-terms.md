@@ -60,9 +60,13 @@ business uses a number; deciding how to route or screen a call; answering a pers
   learn about the holder of a number.
 - **Screening.** Using the data to assess anyone for credit, housing, employment, insurance or any comparable
   decision.
-- **Decisions without a person.** Using a verdict as the sole basis for a decision that has legal effects
-  for, or similarly significantly affects, a person. Screening a call is not such a decision; refusing someone
-  a service is.
+- **Decisions without a person.** Using a verdict as the sole basis for an automated decision about a natural
+  person that has legal effects for, or similarly significantly affects, that person (GDPR art. 22). Showing a
+  verdict or a warning to a person who then decides is not such a decision. Automatically blocking, rejecting
+  or silencing a call, or refusing someone a service, can be, depending on what it means for the person
+  concerned. Routing or screening a call is a permitted purpose, within this limit. You are responsible for
+  judging your own use and for any lawful basis and safeguards it needs; these terms do not decide in advance
+  whether a particular use falls under art. 22.
 - **Resale.** Selling, licensing or offering the data as your own dataset, feed or API. A product that runs on
   the data is fine; the data itself is not for sale.
 - **Circumventing limits.** Several keys or accounts, shared keys, or working around the caps.
@@ -120,8 +124,13 @@ behalf, as your processor** (GDPR art. 28), and this article is the processing a
 
 ### 7.2 Our answer
 
-For the directory, Calmido is the controller. For what you do with our answers, **you are an
-independent controller** in your own right. For the answers there is no processing agreement between us.
+For the directory, Calmido decides on its own the purposes and essential means of compiling, keeping and
+making available its directory: the sources, how a verdict is calculated, and what an answer contains. For
+that, Calmido is an independent controller. For your decision to ask for personal data through the API, and
+for what you do with the answer in your own product or service, **you are an independent controller**, and
+you decide and record your own lawful basis. Neither of us is a joint controller of the other's processing
+only because one of us uses or provides the API. This does not rule out joint controllership under GDPR
+art. 26 where we actually decide together on the purposes and means of a specific processing.
 
 **What you take on**, as the recipient of personal data:
 
@@ -149,8 +158,10 @@ e-mail.
 ## 8. The data
 
 The directory is built from community reports and public sources. Reports are counts and categories, never
-free text. A verdict is a statistical reading of reported calls, with the uncertainty that comes with it; it
-can be wrong, and numbers are spoofed and reassigned. The API is provided **as is**, without a warranty that
+free text. A verdict is a statistical reading of reported calls, with the uncertainty that comes with it. It
+describes reports about calls from a telephone number. It is not a finding that the holder of the number
+committed an offence or acted unlawfully, and it is not proof of what any person did. It can be wrong, and
+numbers are spoofed and reassigned. The API is provided **as is**, without a warranty that
 the data is accurate, complete or fit for your purpose. Build that into your product: show it as a report,
 not a fact, and link to the evidence.
 
@@ -168,8 +179,12 @@ Disputing is free for everyone.
 
 ## 10. Suspension and termination
 
-We may suspend or end access immediately if you breach these terms, art. 5 in particular, or endanger the
-service; where reasonable, we warn first. Art. 6 applies afterwards.
+We may suspend access immediately where that is needed to deal with a security threat, misuse of the API
+(art. 5 in particular), unlawful use, or a real risk to the service or its users. For misuse under art. 5
+and for unlawful use, we may also end access immediately. For any other breach of
+these terms we warn you first and give you a reasonable time to put it right before we suspend or end access.
+We keep a suspension to what is needed and restore access when its reason no longer applies. You can stop
+using the API at any time. Art. 6 applies afterwards.
 
 ## 11. Liability
 
@@ -182,8 +197,9 @@ unavailable. These limits do not apply to intent or deliberate recklessness.
 The MCP endpoint and the free key are open to anyone, including individuals who build something for
 themselves, such as spam filtering at home.
 
-If you use the API as a consumer, the limits in art. 11 apply only as far as consumer law allows, and
-nothing in these terms takes away rights the law gives you.
+If you use the API as a consumer, mandatory consumer protection law applies to all of these terms, and
+nothing in them takes away rights the law gives you. A provision that cannot be enforced against a consumer
+does not affect the rest of the terms.
 
 ## 13. Your obligations towards us, if a verdict is challenged through you
 
