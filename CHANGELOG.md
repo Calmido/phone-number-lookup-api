@@ -2,6 +2,13 @@
 
 Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first.
 
+## 2026-11-27
+
+- REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key from
+  [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers), and
+  `GET /developer/v1/partner/usage`. Contract in [openapi.yaml](openapi.yaml); examples in
+  [examples/](examples/).
+
 ## 2026-11-25
 
 - [API terms](terms/api-terms.md) version 1.0 published, in force on 25 November 2026. Art. 5 states that a business name is shown only with its source information.
