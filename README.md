@@ -9,7 +9,7 @@ Luxembourgish (+352) number.
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
 | **Live** | REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key. Same numbers in, same fields out |
-| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) for the key and the MCP setup, [the reference](https://www.calmido.com/nl-en/developers/reference) for answers, errors, limits and rules; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and the [API terms](terms/api-terms.md) |
+| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) for the key and the MCP setup, [the reference](https://www.calmido.com/nl-en/developers/reference) for answers, errors, limits and rules; this repository holds the [OpenAPI spec](openapi.yaml) (copied to [calmido.com/openapi.yaml](https://www.calmido.com/openapi.yaml): change both in the same go), examples, the changelog and the [API terms](terms/api-terms.md) |
 
 ## Quick start
 
