@@ -2,7 +2,7 @@
 
 Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first.
 
-## Unreleased
+## 2026-11-27
 
 - REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key from
   [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers), and

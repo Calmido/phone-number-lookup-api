@@ -8,7 +8,7 @@ Luxembourgish (+352) number.
 | | |
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
-| **Launching soon** | REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key. Same numbers in, same fields out |
+| **Live** | REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key. Same numbers in, same fields out |
 | **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and the [API terms](terms/api-terms.md) |
 
 ## Quick start
@@ -39,7 +39,7 @@ claude mcp add --transport http calmido https://www.calmido.com/api/mcp
 Adding Calmido to Claude or ChatGPT without code: [calmido.com/nl-en/ai-assistants](https://www.calmido.com/nl-en/ai-assistants).
 Listed in the MCP Registry as `com.calmido/phone-number-lookup`.
 
-### With a key (REST, launching soon)
+### With a key (REST)
 
 Get a free key at [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers). A key
 belongs to a Calmido account: say what you are building, confirm your e-mail address with the code we
