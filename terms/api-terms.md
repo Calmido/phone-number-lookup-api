@@ -109,14 +109,20 @@ behalf, as your processor** (GDPR art. 28), and this article is the processing a
   random key that exists only in memory. The key and the fingerprints are dropped at midnight UTC, or
   earlier when the service restarts or your key has been idle for a while. Without the key, a fingerprint
   cannot be matched to a number. We do not cache answers.
-- **Confidentiality and security:** only the systems that answer the request see the number; the measures
-  are those in our privacy statement.
+- **Confidentiality and security:** only the systems that answer the request see the number. Only the
+  people who run the service have access to those systems, and each of them has signed a confidentiality
+  undertaking. Anyone who gets access later signs one first. The measures are those in our privacy
+  statement.
 - **Sub-processors:** for the REST endpoints, only our hosting provider (Germany): `api.calmido.com` runs
   on our own servers, with no proxy or security service in front of it. For the MCP endpoint, also the
   security service in front of `www.calmido.com`. Both are named on our list of recipients. We tell you
   before we add one, and you may object.
 - **Assistance:** we help you answer requests from people whose number you sent us, and with your own
   data protection impact assessment where it concerns this processing.
+- **Checks:** once a year, and after a breach, you may check that we keep to this article. We answer a
+  written questionnaire and give you the information you need. We do not allow an inspection on our
+  premises or in our systems, because nothing is stored there that you could inspect: the answer to each
+  request is built and dropped.
 - **Breaches:** we tell you without undue delay after becoming aware of a breach affecting numbers you
   sent.
 - **End:** there is nothing to return or delete, because nothing is kept. On request we confirm this in
