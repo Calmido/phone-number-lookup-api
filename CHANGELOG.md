@@ -16,7 +16,7 @@ Changes to the Calmido Phone Number Lookup API that you can see from the outside
 ## 2026-10-16
 
 - `page_url` follows the requested `language` where the number's market has a page in it (`nl-en`,
-  `be-fr`, …); otherwise the market's main language. *Rolling out with the next website release.*
+  `be-fr`, …); otherwise the market's main language.
 - Listed in the Claude connectors directory.
 
 ## 2026-10-15
