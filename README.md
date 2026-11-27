@@ -48,7 +48,8 @@ one key per mailbox (`+tags` and Gmail dots count as the same mailbox), and at m
 domain. The key is shown once; keep it on your server. On
 [the account page](https://www.calmido.com/nl-en/developers/account) you see the key by its prefix and
 today's count, and you replace or delete it. The number goes in the body, never in the URL, so it does
-not end up in access logs.
+not end up in access logs. Call the endpoint from your server: the key must stay secret, and browsers
+on other sites get no CORS headers.
 
 ```sh
 curl -s https://api.calmido.com/developer/v1/lookup \
@@ -68,7 +69,7 @@ examples in [curl](examples/rest-lookup.sh), [Python](examples/rest-lookup.py) a
 | Argument | Required | |
 |---|---|---|
 | `number` | yes | International (`+31 20 123 4567`, `0031…`, `31201234567`) or national (`020 123 4567`). Spaces, dashes and brackets are ignored |
-| `country` | no | ISO 3166-1 alpha-2 (`NL`, `BE`, `LU`) for a national number. Without it, NL, then BE, then LU are tried |
+| `country` | no | ISO 3166-1 alpha-2 (`NL`, `BE`, `LU`, either case) for a national number. Tried first; without it, or if the number is not valid there, NL, then BE, then LU are tried |
 | `language` | no | `nl`, `en` or `fr`: the language of `summary` and of the page at `page_url`. Default `en` |
 
 The number must be valid and dialable. An unallocated range is refused with an error that says so,
@@ -147,6 +148,16 @@ The day ends at midnight UTC. Each keyed answer carries `X-RateLimit-Limit`,
 `X-RateLimit-Remaining` (distinct numbers left today) and `X-RateLimit-Reset` (Unix seconds: midnight,
 or the end of the minute when the per-minute limit refused the request). Need
 more? Write to [support@calmido.com](mailto:support@calmido.com) with what you are building.
+
+## Versions and changes
+
+The REST path carries the major version (`/developer/v1/`). Within v1, as article 9 of the
+[API terms](terms/api-terms.md) says:
+
+- **New fields** and better coverage roll out without notice. Ignore fields you do not know.
+- **Breaking changes** are announced in the [changelog](CHANGELOG.md) and by e-mail to key holders
+  before they apply. Without a key, watch this repository to hear of them.
+- **Live status:** [status.calmido.com](https://status.calmido.com). There is no availability guarantee.
 
 ## Data and privacy
 
