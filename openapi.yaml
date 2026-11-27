@@ -188,10 +188,11 @@ components:
             Spaces, dashes and brackets are ignored.
         country:
           type: string
-          pattern: '^[A-Z]{2}$'
+          pattern: '^[A-Za-z]{2}$'
           description: |
-            ISO 3166-1 alpha-2 country of a national-format number. Without it, NL, then BE, then LU
-            are tried.
+            ISO 3166-1 alpha-2 country of a national-format number, in either case. It is tried first;
+            if the number is not valid there, or without it, NL, then BE, then LU are tried. Ignored for
+            an international number.
         language:
           type: string
           enum: [nl, en, fr]
@@ -274,6 +275,7 @@ components:
         plan:
           type: string
           enum: [free, trial, pro, business]
+          description: Only `free` keys are issued today; the other values are reserved for later plans.
         expires_at:
           type: [string, 'null']
           format: date-time
