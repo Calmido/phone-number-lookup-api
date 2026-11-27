@@ -9,7 +9,7 @@ Luxembourgish (+352) number.
 |---|---|
 | **Live** | MCP endpoint `https://www.calmido.com/api/mcp`: open, no account, no key |
 | **Live** | REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key. Same numbers in, same fields out |
-| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) is the reference; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and the [API terms](terms/api-terms.md) |
+| **Docs** | [calmido.com/nl-en/developers](https://www.calmido.com/nl-en/developers) for the key and the MCP setup, [the reference](https://www.calmido.com/nl-en/developers/reference) for answers, errors, limits and rules; this repository holds the [OpenAPI spec](openapi.yaml), examples, the changelog and the [API terms](terms/api-terms.md) |
 
 ## Quick start
 
@@ -91,8 +91,8 @@ not guessed.
   "top_category": null,
   "business": null,
   "restricted": false,
-  "page_url": "https://www.calmido.com/nl-nl/directory/31183554004",
-  "summary": "This number has been reported 59×. Based on user reports; no reports does not mean a number is safe. The reports themselves, their dates and the full picture are at https://www.calmido.com/nl-nl/directory/31183554004"
+  "page_url": "https://www.calmido.com/nl-en/directory/31183554004",
+  "summary": "This number has been reported 59×. Based on user reports; no reports does not mean a number is safe. The reports themselves, their dates and the full picture are at https://www.calmido.com/nl-en/directory/31183554004"
 }
 ```
 

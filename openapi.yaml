@@ -67,11 +67,11 @@ paths:
                 top_category: null
                 business: null
                 restricted: false
-                page_url: https://www.calmido.com/nl-nl/directory/31183554004
+                page_url: https://www.calmido.com/nl-en/directory/31183554004
                 summary: >-
                   This number has been reported 59×. Based on user reports; no reports does not mean a
                   number is safe. The reports themselves, their dates and the full picture are at
-                  https://www.calmido.com/nl-nl/directory/31183554004
+                  https://www.calmido.com/nl-en/directory/31183554004
         '400':
           description: The number is not a valid, dialable number.
           content:
