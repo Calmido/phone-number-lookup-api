@@ -58,8 +58,10 @@ curl -s https://api.calmido.com/developer/v1/lookup \
   -d '{"number":"+31 183 554 004","language":"en"}'
 ```
 
-The answer is the object under [Output](#output). Errors are `{ "error": "…" }`: `invalid_number`
-(400), `missing_key` or `invalid_key` (401), `body_too_large` (413, body over 1 KiB), `rate_limited` (429, with `Retry-After`). Today's count:
+The answer is the object under [Output](#output). Errors are `{ "error": "…", "message": "…" }`:
+branch on `error`, read `message`, which may be reworded. `invalid_request` (400, the body is not a
+JSON object), `invalid_number` (400), `missing_key` or `invalid_key` (401), `body_too_large` (413, body
+over 1 KiB), `rate_limited` (429, with `Retry-After`). Today's count:
 `GET /developer/v1/partner/usage` with the same header. The full contract is in [openapi.yaml](openapi.yaml);
 examples in [curl](examples/rest-lookup.sh), [Python](examples/rest-lookup.py) and
 [Node.js](examples/rest-lookup.mjs).
@@ -89,6 +91,7 @@ not guessed.
   },
   "verdict": "suspicious",
   "report_count": 59,
+  "last_reported_on": "2026-09-11",
   "top_category": null,
   "business": null,
   "restricted": false,
@@ -101,6 +104,7 @@ not guessed.
 |---|---|
 | `verdict` | One of the seven values below |
 | `report_count` | Community reports on the number |
+| `last_reported_on` | The day of the newest report (UTC, `YYYY-MM-DD`), or `null` when there are none. Most reports are months old: weigh a verdict by its age as well as by its count |
 | `top_category` | The most reported category, in the requested language, or `null`: telemarketing, robocall, recruitment, phishing, spoofing, harassment, callback fraud, scam or silent call |
 | `business` | `null`, or `{ "name", "sources": [{ "name", "url", "licence", "licence_url" }] }`: the registered business and where its name comes from |
 | `restricted` | `true` when the identity behind the number was erased on request |
