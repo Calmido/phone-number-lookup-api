@@ -43,5 +43,6 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     answer = lookup(sys.argv[1], *(sys.argv[2:3] or ["en"]))
-    print(f"{answer['number']['international']}: {answer['verdict']}, {answer['report_count']} reports")
+    last = f", newest {answer['last_reported_on']}" if answer.get("last_reported_on") else ""
+    print(f"{answer['number']['international']}: {answer['verdict']}, {answer['report_count']} reports{last}")
     print(answer["summary"])

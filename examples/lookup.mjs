@@ -29,6 +29,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(1);
   }
   const answer = await lookup(number, language);
-  console.log(`${answer.number.international}: ${answer.verdict}, ${answer.report_count} reports`);
+  const newest = answer.last_reported_on ? `, newest ${answer.last_reported_on}` : '';
+  console.log(`${answer.number.international}: ${answer.verdict}, ${answer.report_count} reports${newest}`);
   console.log(answer.summary);
 }

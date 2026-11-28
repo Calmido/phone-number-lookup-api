@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Calmido Phone Number Lookup API
-  version: 1.0.0
+  version: 1.1.0
   summary: Who is behind a phone number in the Netherlands, Belgium or Luxembourg.
   description: |
     The REST door to the same lookup the MCP endpoint answers: the community verdict, the number of
@@ -64,6 +64,7 @@ paths:
                   country: NL
                 verdict: suspicious
                 report_count: 59
+                last_reported_on: '2026-09-11'
                 top_category: null
                 business: null
                 restricted: false
@@ -73,13 +74,22 @@ paths:
                   number is safe. The reports themselves, their dates and the full picture are at
                   https://www.calmido.com/nl-en/directory/31183554004
         '400':
-          description: The number is not a valid, dialable number.
+          description: |
+            The body is not a JSON object (`invalid_request`), or it holds no valid, dialable number
+            (`invalid_number`). Both are refused before the key is checked.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-              example:
-                error: invalid_number
+              examples:
+                invalid_number:
+                  value:
+                    error: invalid_number
+                    message: Not a valid, dialable phone number. Include the country code (+31 …) or pass country.
+                invalid_request:
+                  value:
+                    error: invalid_request
+                    message: 'The body must be a JSON object, such as {"number":"+31 20 123 4567"}.'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '413':
@@ -90,6 +100,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 error: body_too_large
+                message: The body is over 1 KiB. Send one number per request.
         '429':
           description: |
             Over the daily cap of distinct numbers, or over the per-minute guard. `Retry-After` says
@@ -112,6 +123,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 error: rate_limited
+                message: Over today's 100 distinct numbers. The count starts again at midnight UTC; Retry-After says when.
   /developer/v1/partner/usage:
     get:
       operationId: getUsage
@@ -141,6 +153,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 error: unavailable
+                message: Usage could not be read just now. Try again in a minute.
 components:
   securitySchemes:
     apiKey:
@@ -174,6 +187,7 @@ components:
             $ref: '#/components/schemas/Error'
           example:
             error: invalid_key
+            message: This key was never issued, or it was replaced, revoked or deleted.
   schemas:
     LookupRequest:
       type: object
@@ -202,7 +216,7 @@ components:
             answered in `en`.
     LookupResult:
       type: object
-      required: [number, verdict, report_count, top_category, business, restricted, page_url, summary]
+      required: [number, verdict, report_count, last_reported_on, top_category, business, restricted, page_url, summary]
       properties:
         number:
           type: object
@@ -226,6 +240,13 @@ components:
         report_count:
           type: integer
           minimum: 0
+        last_reported_on:
+          type: [string, 'null']
+          format: date
+          description: |
+            The day of the newest community report, in UTC, or `null` when there are none. How old
+            the evidence is: most reports are months old, so weigh a verdict by this date as well as by
+            `report_count`. The reports themselves and their times stay on the page at `page_url`.
         top_category:
           type: [string, 'null']
           description: The most reported category, in the requested language.
@@ -290,8 +311,12 @@ components:
           description: The next midnight UTC.
     Error:
       type: object
-      required: [error]
+      required: [error, message]
       properties:
         error:
           type: string
-          enum: [missing_key, invalid_key, invalid_number, body_too_large, rate_limited, unavailable]
+          description: A stable code. Branch on this.
+          enum: [missing_key, invalid_key, invalid_request, invalid_number, body_too_large, rate_limited, unavailable]
+        message:
+          type: string
+          description: A sentence for the developer reading the response. It may be reworded; never branch on it.

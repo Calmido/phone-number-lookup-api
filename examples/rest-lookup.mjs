@@ -10,10 +10,11 @@ export async function lookup(number, language = 'en', country, key = process.env
     body: JSON.stringify({ number, language, ...(country && { country }) }),
   });
   const body = await response.json();
-  // 400 invalid_number, 401 missing_key or invalid_key, 429 rate_limited (see Retry-After).
+  // 400 invalid_request or invalid_number, 401 missing_key or invalid_key, 429 rate_limited (see Retry-After).
+  // Branch on `error`; `message` is a sentence for you and may be reworded.
   if (!response.ok) {
     const retry = response.headers.get('retry-after');
-    throw new Error(`${response.status} ${body.error}${retry ? `, retry in ${retry}s` : ''}`);
+    throw new Error(`${response.status} ${body.error}: ${body.message}${retry ? ` (retry in ${retry}s)` : ''}`);
   }
   return body;
 }
@@ -25,6 +26,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(1);
   }
   const answer = await lookup(number, language);
-  console.log(`${answer.number.international}: ${answer.verdict}, ${answer.report_count} reports`);
+  const newest = answer.last_reported_on ? `, newest ${answer.last_reported_on}` : '';
+  console.log(`${answer.number.international}: ${answer.verdict}, ${answer.report_count} reports${newest}`);
   console.log(answer.summary);
 }

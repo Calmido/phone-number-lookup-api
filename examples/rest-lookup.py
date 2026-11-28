@@ -25,14 +25,17 @@ def lookup(number, language="en", country=None, key=None):
         with urllib.request.urlopen(request, timeout=20) as response:
             return json.load(response)
     except urllib.error.HTTPError as error:
-        # 400 invalid_number, 401 missing_key or invalid_key, 429 rate_limited (see Retry-After).
+        # 400 invalid_request or invalid_number, 401 missing_key or invalid_key, 429 rate_limited (see Retry-After).
+        # Branch on `error`; `message` is a sentence for you and may be reworded.
         retry = error.headers.get("Retry-After")
-        raise RuntimeError(f"{error.code} {json.load(error)['error']}" + (f", retry in {retry}s" if retry else "")) from None
+        body = json.load(error)
+        raise RuntimeError(f"{error.code} {body['error']}: {body['message']}" + (f" (retry in {retry}s)" if retry else "")) from None
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or "CALMIDO_API_KEY" not in os.environ:
         sys.exit(__doc__)
     answer = lookup(sys.argv[1], *(sys.argv[2:3] or ["en"]))
-    print(f"{answer['number']['international']}: {answer['verdict']}, {answer['report_count']} reports")
+    last = f", newest {answer['last_reported_on']}" if answer.get("last_reported_on") else ""
+    print(f"{answer['number']['international']}: {answer['verdict']}, {answer['report_count']} reports{last}")
     print(answer["summary"])

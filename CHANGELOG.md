@@ -2,6 +2,15 @@
 
 Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first.
 
+## Unreleased
+
+- Every REST error carries a `message` next to its `error` code: a sentence for the developer, which may
+  be reworded. A body that is not a JSON object is now `invalid_request` (400) instead of
+  `invalid_number`. A 429 says whether the per-minute limit or the daily cap refused.
+- The answer carries `last_reported_on`: the day of the newest community report in UTC, or `null`. This
+  is a new field, which per the API terms (art. 9) needs no notice, and it is also in the MCP result.
+- OpenAPI `info.version` 1.1.0.
+
 ## 2026-11-27
 
 - REST endpoint `POST https://api.calmido.com/developer/v1/lookup` with a free key from
