@@ -160,7 +160,9 @@ The REST path carries the major version (`/developer/v1/`). Within v1, as articl
 
 - **New fields** and better coverage roll out without notice. Ignore fields you do not know.
 - **Breaking changes** are announced in the [changelog](CHANGELOG.md) and by e-mail to key holders
-  before they apply. Without a key, watch this repository to hear of them.
+  before they apply. Without a key, follow them here: each dated changelog entry is a
+  [GitHub release](https://github.com/Calmido/phone-number-lookup-api/releases) with the same date as its
+  tag, so *Watch → Custom → Releases* mails you when the API changes.
 - **Live status:** [status.calmido.com](https://status.calmido.com). There is no availability guarantee.
 
 ## Data and privacy

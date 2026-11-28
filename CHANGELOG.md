@@ -1,6 +1,8 @@
 # Changelog
 
-Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first.
+Changes to the Calmido Phone Number Lookup API that you can see from the outside. Newest first. Each dated
+entry is also a [GitHub release](https://github.com/Calmido/phone-number-lookup-api/releases), tagged with
+its date, so that *Watch → Custom → Releases* tells you when the API changes.
 
 ## Unreleased
 
